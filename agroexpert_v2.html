@@ -1071,7 +1071,11 @@ console.log("soilMetrics =", document.getElementById('soilMetrics'));
     });
 
     const result = await response.json();
-
+    if (!response.ok) {
+      alert("Ошибка сохранения на сервере");
+      console.error(result);
+      return;
+    }
     document.getElementById("generatedCode").style.display = "block";
     document.getElementById("codeDisplay").textContent = result.accessCode;
 }
