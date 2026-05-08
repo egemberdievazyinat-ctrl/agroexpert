@@ -894,7 +894,7 @@
   document.getElementById('codeError').style.display = 'none';
 
   try {
-    const response = await fetch(`http://localhost:3000/results/${code}`);
+    const response = await fetch(`/results/${code}`);
     
     if (!response.ok) {
       document.getElementById('codeError').style.display = 'block';
@@ -1003,8 +1003,7 @@ console.log("soilMetrics =", document.getElementById('soilMetrics'));
 
   try {
 
-    const response = await fetch(
-      "http://localhost:3000/login",
+    const response = await fetch("/login", 
       {
         method: "POST",
         headers: {
@@ -1063,7 +1062,7 @@ console.log("soilMetrics =", document.getElementById('soilMetrics'));
       recommendations: document.getElementById('a-rec').value
     };
 
-    const response = await fetch("http://localhost:3000/add-research", {
+    const response = await fetch("/add-research", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
