@@ -140,3 +140,44 @@ app.post("/login", async (req, res) => {
 app.listen(3000, () => {
     console.log("AgroLab running on http://localhost:3000");
 });
+
+app.post("/add-request", async (req, res) => {
+  try {
+    const {
+      name,
+      phone,
+      region,
+      field_info,
+      analyses,
+      comment
+    } = req.body;
+
+    const { data, error } = await supabase
+      .from("service_requests")
+      .insert([{
+        name,
+        phone,
+        region,
+        field_info,
+        analyses,
+        comment
+      }]);
+
+    if (error) {
+      console.error(error);
+      return res.status(500).json({
+        error: "Ошибка сохранения"
+      });
+    }
+
+    res.json({
+      success: true
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: "Server error"
+    });
+  }
+});

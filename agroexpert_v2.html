@@ -877,6 +877,33 @@
     document.getElementById('successMsg').style.display = 'block';
   });
 
+  async function submitRequest() {
+
+  const payload = {
+    name: document.getElementById("reqName").value,
+    phone: document.getElementById("reqPhone").value,
+    region: document.getElementById("reqRegion").value,
+    field_info: document.getElementById("reqField").value,
+    comment: document.getElementById("reqComment").value,
+    analyses: Array.from(
+      document.querySelectorAll('input[name="analysis"]:checked')
+    ).map(el => el.value).join(", ")
+  };
+
+  const response = await fetch("/add-request", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (response.ok) {
+    alert("Заявка отправлена!");
+  } else {
+    alert("Ошибка отправки");
+  }
+ }
   // ── SMOOTH SCROLL ──
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', function(e) {
