@@ -1049,7 +1049,9 @@ console.log("soilMetrics =", document.getElementById('soilMetrics'));
 
     const payload = {
       clientName: document.getElementById('a-name').value,
-      visitDate: document.getElementById('a-date').value,
+      visitDate: new Date(
+       document.getElementById('a-date').value
+      ).toISOString().split('T')[0],
       location: document.getElementById('a-loc').value,
       culture: document.getElementById('a-crop').value,
 
