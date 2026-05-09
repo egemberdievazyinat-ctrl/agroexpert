@@ -1033,8 +1033,13 @@
   }
 
   function showResults(code, rec) {
-    console.log("showResults стартовала", rec);
+    
+    const selectedTypes = (rec.analysis_types || "")
+     .split(",")
+     .map(x => x.trim());
 
+    console.log("showResults стартовала", rec);
+    
     console.log("r-name =", document.getElementById('r-name'));
     console.log("r-date =", document.getElementById('r-date'));
     console.log("r-location =", document.getElementById('r-location'));
@@ -1053,13 +1058,38 @@
   document.getElementById('r-code').textContent =
     code;
 
+  document.getElementById('soilSection').style.display =
+  selectedTypes.includes("soil") ? "block" : "none";
+
+  if (selectedTypes.includes("soil")) {
   document.getElementById('soilMetrics').innerHTML =
-    metricCard('pH', rec.ph || '—', 'pH', 'ph') +
-    metricCard('Азот (N)', rec.nitrogen || '—', 'мг/кг', 'n') +
-    metricCard('Фосфор (P)', rec.phosphorus || '—', 'мг/кг', 'p') +
-    metricCard('Калий (K)', rec.potassium || '—', 'мг/кг', 'k') +
-    metricCard('Гумус', rec.humus || '—', '%', 'hum') +
-    metricCard('Засоленность', rec.salinity || '—', '', 'salt');
+    metricCard('pH', rec.ph || '-', 'pH', 'ph') +
+    metricCard('Азот (N)', rec.nitrogen || '-', 'мг/кг', 'n') +
+    metricCard('Фосфор (P)', rec.phosphorus || '-', 'мг/кг', 'p') +
+    metricCard('Калий (K)', rec.potassium || '-', 'мг/кг', 'k') +
+    metricCard('Гумус', rec.humus || '-', '%', 'hum') +
+    metricCard('Засоленность', rec.salinity || '-', '', 'salt');
+}
+   document.getElementById('waterSection').style.display =
+   selectedTypes.includes("water") ? "block" : "none";
+
+  if (selectedTypes.includes("water")) {
+  document.getElementById('waterMetrics').innerHTML =
+    metricCard('pH воды', rec.water_ph || '-', '', 'ph') +
+    metricCard('Минерализация', rec.water_mineralization || '-', '', 'ph') +
+    metricCard('Жесткость', rec.water_hardness || '-', '', 'ph') +
+    metricCard('Солёность', rec.water_salinity || '-', '', 'salt');
+  }
+  document.getElementById('plantSection').style.display =
+  selectedTypes.includes("plant") ? "block" : "none";
+
+  if (selectedTypes.includes("plant")) {
+  document.getElementById('plantMetrics').innerHTML =
+    metricCard('Азот в листьях', rec.plant_nitrogen || '-', '', 'n') +
+    metricCard('Хлорофилл', rec.plant_chlorophyll || '-', '', 'ph') +
+    metricCard('Влажность', rec.plant_moisture || '-', '', 'ph') +
+    metricCard('Состояние', rec.plant_condition || '-', '', 'ph');
+  }
     
   document.getElementById('recsBlock').innerHTML =
     rec.recommendations && rec.recommendations !== 'нет'
@@ -1149,7 +1179,7 @@
   }
 
  async function generateCode() {
-  
+
     const payload = {
       
       
