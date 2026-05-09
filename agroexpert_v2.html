@@ -619,16 +619,16 @@
           <div class="form-row">
             <div class="form-group">
               <label>Ваше имя *</label>
-              <input type="text" placeholder="Иван Иванов" required>
+              <input type="text" id="reqName" placeholder="Иван Иванов" required>
             </div>
             <div class="form-group">
               <label>Телефон *</label>
-              <input type="tel" placeholder="+996 700 000 000" required>
+              <input type="tel" id="reqPhone" placeholder="+996 700 000 000" required>
             </div>
           </div>
           <div class="form-group">
             <label>Район / область</label>
-            <select>
+            <select id="reqRegion">
               <option value="">Выберите район</option>
               <option>Бишкек</option>
               <option>Чуйская область</option>
@@ -642,19 +642,21 @@
           </div>
           <div class="form-group">
             <label>Тип участка и культуры</label>
-            <input type="text" placeholder="Например: поле 5 га, пшеница и кукуруза">
+            <input type="text" id="reqField" placeholder="Например: поле 5 га, пшеница и кукуруза">
           </div>
           <div class="form-group">
             <label>Нужные анализы</label>
             <div class="checkbox-group">
               <label class="checkbox-item"><input type="checkbox" name="analysis" value="soil"> Анализ почвы</label>
               <label class="checkbox-item"><input type="checkbox" name="analysis" value="water"> Анализ воды</label>
-              <label class="checkbox-item"><input type="checkbox" name="analysis" gitvalue="plant"> Анализ растений</label>
+              <label class="checkbox-item"><input type="checkbox" name="analysis" value="plant"> Анализ растений</label>
             </div>
           </div>
           <div class="form-group">
             <label>Комментарий (проблемы, вопросы)</label>
-            <textarea placeholder="Опишите, что вас беспокоит или какой результат хотите получить..."></textarea>
+            <textarea 
+             id="reqComment"
+             placeholder="Опишите, что вас беспокоит или какой результат хотите получить..."></textarea>
           </div>
           <button type="button" class="submit-btn" onclick="submitRequest()"> Отправить заявку →
           </button>
@@ -879,7 +881,7 @@
   });
 
   async function submitRequest() {
-
+  console.log("submit работает");
   const payload = {
     name: document.getElementById("reqName").value,
     phone: document.getElementById("reqPhone").value,
