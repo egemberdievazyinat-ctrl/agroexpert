@@ -163,6 +163,9 @@ app.post("/add-request", async (req, res) => {
         comment
       }]);
 
+    console.log("Supabase result:", data);
+    console.log("Supabase error:", error); 
+
     if (error) {
       console.error(error);
       return res.status(500).json({
@@ -175,9 +178,7 @@ app.post("/add-request", async (req, res) => {
     });
 
   } catch (err) {
-    console.error(err);
-    res.status(500).json({
-      error: "Server error"
-    });
+    console.error("SERVER ERROR:", err);
+    res.status(500).json(err);
   }
 });
