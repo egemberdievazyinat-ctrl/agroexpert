@@ -84,10 +84,13 @@ app.post("/add-research", async (req, res) => {
 
     recommendations: req.body.recommendations
 };
-
+   
     const { error } = await supabase
     .from("research_results")
     .insert([data]);
+    
+   console.log("DATA:", data);
+   console.log("SUPABASE ERROR:", error);
 
 if (error) {
     console.log("Ошибка базы:", error);
