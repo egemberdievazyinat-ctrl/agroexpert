@@ -661,8 +661,8 @@
           <button type="button" class="submit-btn" onclick="submitRequest()"> Отправить заявку →
           </button>
         </form>
-        <div class="success-msg" id="successMsg">
-          ✅ Спасибо! Мы получили вашу заявку и свяжемся с вами в течение часа.
+        <div class="success-msg" id="successMsg" style="display:none;">
+         ✅ Спасибо! Мы получили вашу заявку и свяжемся с вами в течение 24 часов.
         </div>
       </div>
     </div>
@@ -902,9 +902,14 @@
   });
 
   if (response.ok) {
-    alert("Заявка отправлена!");
-  } else {
-    alert("Ошибка отправки");
+
+   document.getElementById("successMsg").style.display = "block";
+
+   document.getElementById("orderForm").reset();
+
+  }
+  else {
+   alert("Ошибка отправки");
   }
  }
 
