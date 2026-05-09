@@ -1149,10 +1149,7 @@
   }
 
  async function generateCode() {
-      
-    const rawDate = document.getElementById('a-date').value;
-    const [day, month, year] = rawDate.split(".");
-
+  
     const payload = {
       
       
@@ -1160,17 +1157,16 @@
        document.querySelectorAll('input[name="labType"]:checked')
        ).map(el => el.value).join(", "),
       clientName: document.getElementById('a-name').value,
-      visitDate: `${year}-${month}-${day}`,
+      visitDate: document.getElementById('a-date').value,
       
       location: document.getElementById('a-loc').value,
       culture: document.getElementById('a-crop').value,
 
-      ph: document.getElementById('a-ph').value.replace(",", "."),
-      nitrogen: document.getElementById('a-n').value.replace(",", "."),
-      phosphorus: document.getElementById('a-p').value.replace(",", "."),
-      potassium: document.getElementById('a-k').value.replace(",", "."),
-      humus: document.getElementById('a-hum').value.replace(",", "."),
-      salinity: document.getElementById('a-salt').value,
+      ph: document.getElementById('a-ph').value?.replace(",", ".") || null,
+      nitrogen: document.getElementById('a-n').value?.replace(",", ".") || null,
+      phosphorus: document.getElementById('a-p').value?.replace(",", ".") || null,
+      potassium: document.getElementById('a-k').value?.replace(",", ".") || null,
+      humus: document.getElementById('a-hum').value?.replace(",", ".") || null,
 
       water_ph: document.getElementById('a-water-ph')?.value?.replace(",", ".") || null,
       water_mineralization: document.getElementById('a-water-mineralization')?.value?.replace(",", ".") || null,
