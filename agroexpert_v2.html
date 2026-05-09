@@ -647,16 +647,17 @@
           <div class="form-group">
             <label>Нужные анализы</label>
             <div class="checkbox-group">
-              <label class="checkbox-item"><input type="checkbox" value="soil"> Анализ почвы</label>
-              <label class="checkbox-item"><input type="checkbox" value="water"> Анализ воды</label>
-              <label class="checkbox-item"><input type="checkbox" value="plant"> Анализ растений</label>
+              <label class="checkbox-item"><input type="checkbox" name="analysis" value="soil"> Анализ почвы</label>
+              <label class="checkbox-item"><input type="checkbox" name="analysis" value="water"> Анализ воды</label>
+              <label class="checkbox-item"><input type="checkbox" name="analysis" gitvalue="plant"> Анализ растений</label>
             </div>
           </div>
           <div class="form-group">
             <label>Комментарий (проблемы, вопросы)</label>
             <textarea placeholder="Опишите, что вас беспокоит или какой результат хотите получить..."></textarea>
           </div>
-          <button type="submit" class="submit-btn">Отправить заявку →</button>
+          <button type="button" class="submit-btn" onclick="submitRequest()"> Отправить заявку →
+          </button>
         </form>
         <div class="success-msg" id="successMsg">
           ✅ Спасибо! Мы получили вашу заявку и свяжемся с вами в течение часа.
@@ -904,6 +905,7 @@
     alert("Ошибка отправки");
   }
  }
+
   // ── SMOOTH SCROLL ──
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', function(e) {
