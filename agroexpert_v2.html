@@ -835,8 +835,8 @@
 
          </div>
         </div>
-
-        <div style="margin-top:1rem;">
+      <div id="soilFields" style="display: none;">
+        <div tyle="margin-top:1rem;">
           <label style="font-size:0.8rem;color:var(--text-mid);display:block;margin-bottom:0.5rem;font-weight:500;">Показатели почвы</label>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;">
             <div><label style="font-size:0.75rem;color:var(--text-light);">pH</label><input id="a-ph" type="text" placeholder="6.8" style="width:100%;padding:0.6rem;border:1px solid var(--cream-dark);border-radius:8px;font-size:0.88rem;font-family:'Geologica',sans-serif;"></div>
@@ -851,6 +851,24 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div id="waterFields" style="display:none;">
+         <h4>Показатели воды</h4>
+
+         <input type="text" placeholder="pH воды">
+         <input type="text" placeholder="Минерализация">
+         <input type="text" placeholder="Жесткость">
+      </div>
+
+      <div id="plantFields" style="display:none;">
+         <h4>Показатели растений</h4>
+
+         <input type="text" placeholder="Азот в листьях">
+         <input type="text" placeholder="Хлорофилл">
+         <input type="text" placeholder="Состояние растения">
+      </div>
+
         <div style="margin-top:1rem;">
           <label style="font-size:0.8rem;color:var(--text-mid);display:block;margin-bottom:0.3rem;font-weight:500;">Рекомендации агронома</label>
           <textarea id="a-rec" placeholder="Например: Внести 120 кг/га аммиачной селитры. Известкование не требуется. Оптимально выращивать пшеницу или ячмень." style="width:100%;padding:0.8rem;border:1px solid var(--cream-dark);border-radius:8px;min-height:90px;font-size:0.9rem;font-family:'Geologica',sans-serif;resize:vertical;"></textarea>
@@ -1002,10 +1020,10 @@
     console.log("showResults стартовала", rec);
 
     console.log("r-name =", document.getElementById('r-name'));
-console.log("r-date =", document.getElementById('r-date'));
-console.log("r-location =", document.getElementById('r-location'));
-console.log("r-code =", document.getElementById('r-code'));
-console.log("soilMetrics =", document.getElementById('soilMetrics'));
+    console.log("r-date =", document.getElementById('r-date'));
+    console.log("r-location =", document.getElementById('r-location'));
+    console.log("r-code =", document.getElementById('r-code'));
+    console.log("soilMetrics =", document.getElementById('soilMetrics'));
 
   document.getElementById('r-name').textContent =
     rec.client_name || '—';
@@ -1096,6 +1114,23 @@ console.log("soilMetrics =", document.getElementById('soilMetrics'));
     document.getElementById('adminPass').value = '';
     document.getElementById('generatedCode').style.display = 'none';
   }
+ 
+  function toggleAnalysisFields() {
+
+   const selected = Array.from(
+    document.querySelectorAll('input[name="labType"]:checked')
+   ).map(el => el.value);
+
+  document.getElementById("soilFields").style.display =
+    selected.includes("soil") ? "block" : "none";
+
+  document.getElementById("waterFields").style.display =
+    selected.includes("water") ? "block" : "none";
+
+  document.getElementById("plantFields").style.display =
+    selected.includes("plant") ? "block" : "none";
+
+  }
 
  async function generateCode() {
 
@@ -1119,6 +1154,7 @@ console.log("soilMetrics =", document.getElementById('soilMetrics'));
       salinity: document.getElementById('a-salt').value,
       recommendations: document.getElementById('a-rec').value
     };
+    console.log(payload);
 
     const response = await fetch("/add-research", {
         method: "POST",
