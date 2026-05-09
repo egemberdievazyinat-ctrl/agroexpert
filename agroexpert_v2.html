@@ -819,17 +819,17 @@
          <div class="checkbox-group">
 
          <label class="checkbox-item">
-           <input type="checkbox" name="labType" value="soil">
+           <input type="checkbox" name="labType" value="soil" onchange="toggleAnalysisFields()">
            Анализ почвы
          </label>
 
          <label class="checkbox-item">
-           <input type="checkbox" name="labType" value="water">
+           <input type="checkbox" name="labType" value="water" onchange="toggleAnalysisFields()">
            Анализ воды
           </label>
 
          <label class="checkbox-item">
-           <input type="checkbox" name="labType" value="plant">
+           <input type="checkbox" name="labType" value="plant" onchange="toggleAnalysisFields()">
            Анализ растений
          </label>
 
@@ -859,6 +859,7 @@
          <input type="text" placeholder="pH воды">
          <input type="text" placeholder="Минерализация">
          <input type="text" placeholder="Жесткость">
+         <input type="text" placeholder="Солёность">
       </div>
 
       <div id="plantFields" style="display:none;">
@@ -866,6 +867,7 @@
 
          <input type="text" placeholder="Азот в листьях">
          <input type="text" placeholder="Хлорофилл">
+         <input type="text" placeholder="Влажность">
          <input type="text" placeholder="Состояние растения">
       </div>
 

@@ -60,18 +60,30 @@ app.post("/add-research", async (req, res) => {
 
     location: req.body.location,
     culture: req.body.culture,
+    analysis_types: req.body.analysis_types,
 
+   //Почва
     ph: req.body.ph,
     nitrogen: req.body.nitrogen,
     phosphorus: req.body.phosphorus,
     potassium: req.body.potassium,
     humus: req.body.humus,
     salinity: req.body.salinity,
+  
+    // Вода
+    water_ph: req.body.water_ph,
+    water_mineralization: req.body.water_mineralization,
+    water_hardness: req.body.water_hardness,
+    water_salinity: req.body.water_salinity,
+
+   // Растения
+    plant_nitrogen: req.body.plant_nitrogen,
+    plant_chlorophyll: req.body.plant_chlorophyll,
+    plant_moisture: req.body.plant_moisture,
+    plant_condition: req.body.plant_condition,
 
     recommendations: req.body.recommendations
 };
-
-  
 
     const { error } = await supabase
     .from("research_results")
