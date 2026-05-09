@@ -812,6 +812,30 @@
             <input id="a-crop" type="text" placeholder="Пшеница, 3 га" style="width:100%;padding:0.7rem 0.9rem;border:1px solid var(--cream-dark);border-radius:8px;font-size:0.9rem;font-family:'Geologica',sans-serif;">
           </div>
         </div>
+
+        <div class="form-group">
+         <label>Тип проведенного анализа</label>
+
+         <div class="checkbox-group">
+
+         <label class="checkbox-item">
+           <input type="checkbox" name="labType" value="soil">
+           Анализ почвы
+         </label>
+
+         <label class="checkbox-item">
+           <input type="checkbox" name="labType" value="water">
+           Анализ воды
+          </label>
+
+         <label class="checkbox-item">
+           <input type="checkbox" name="labType" value="plant">
+           Анализ растений
+         </label>
+
+         </div>
+        </div>
+
         <div style="margin-top:1rem;">
           <label style="font-size:0.8rem;color:var(--text-mid);display:block;margin-bottom:0.5rem;font-weight:500;">Показатели почвы</label>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;">
@@ -1076,6 +1100,10 @@ console.log("soilMetrics =", document.getElementById('soilMetrics'));
  async function generateCode() {
 
     const payload = {
+      
+      analysis_types: Array.from(
+       document.querySelectorAll('input[name="labType"]:checked')
+       ).map(el => el.value).join(", "),
       clientName: document.getElementById('a-name').value,
       visitDate: new Date(
        document.getElementById('a-date').value
