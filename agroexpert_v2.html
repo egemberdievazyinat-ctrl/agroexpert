@@ -1168,6 +1168,17 @@
       potassium: document.getElementById('a-k').value.replace(",", "."),
       humus: document.getElementById('a-hum').value.replace(",", "."),
       salinity: document.getElementById('a-salt').value,
+
+      water_ph: document.getElementById('a-water-ph')?.value?.replace(",", ".") || null,
+      water_mineralization: document.getElementById('a-water-mineralization')?.value?.replace(",", ".") || null,
+      water_hardness: document.getElementById('a-water-hardness')?.value?.replace(",", ".") || null,
+      water_salinity: document.getElementById('a-water-salinity')?.value?.replace(",", ".") || null,
+
+      plant_nitrogen: document.getElementById('a-plant-nitrogen')?.value?.replace(",", ".") || null,
+      plant_chlorophyll: document.getElementById('a-plant-chlorophyll')?.value?.replace(",", ".") || null,
+      plant_moisture: document.getElementById('a-plant-moisture')?.value?.replace(",", ".") || null,
+      plant_condition: document.getElementById('a-plant-condition')?.value || null,
+
       recommendations: document.getElementById('a-rec').value
     };
     console.log(payload);
