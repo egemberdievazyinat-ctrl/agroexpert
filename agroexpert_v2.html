@@ -1149,16 +1149,19 @@
   }
 
  async function generateCode() {
+      
+    const rawDate = document.getElementById('a-date').value;
+    const [day, month, year] = rawDate.split(".");
 
     const payload = {
+      
       
       analysis_types: Array.from(
        document.querySelectorAll('input[name="labType"]:checked')
        ).map(el => el.value).join(", "),
       clientName: document.getElementById('a-name').value,
-      visitDate: new Date(
-       document.getElementById('a-date').value
-      ).toISOString().split('T')[0],
+      visitDate: `${year}-${month}-${day}`,
+      
       location: document.getElementById('a-loc').value,
       culture: document.getElementById('a-crop').value,
 
