@@ -903,11 +903,13 @@
 
   if (response.ok) {
 
+   // скрываем всю форму
+   document.getElementById("orderForm").style.display = "none";
+
+   // показываем сообщение
    document.getElementById("successMsg").style.display = "block";
-
-   document.getElementById("orderForm").reset();
-
   }
+
   else {
    alert("Ошибка отправки");
   }
