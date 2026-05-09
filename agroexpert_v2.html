@@ -1031,15 +1031,37 @@
   if (param === 'hum') return v >= 3 ? 'Хороший ✓' : v >= 2 ? 'Средний ~' : 'Низкий !';
 
   // Вода
-  if (param === 'water_ph') return v >= 6 && v <= 8 ? 'Оптимально ✓' : 'Требует коррекции';
-  if (param === 'water_min') return v <= 1000 ? 'Чистая ✓' : 'Повышено';
-  if (param === 'water_hard') return v <= 7 ? 'Норма ✓' : 'Жёсткая';
+  if (param === 'water_ph')
+  return v >= 6 && v <= 8
+    ? 'Норма ✓'
+    : v >= 5 && v <= 9
+    ? 'Средний ~'
+    : 'Отклонение !';
+
+if (param === 'water_min')
+  return v <= 500
+    ? 'Норма ✓'
+    : v <= 1000
+    ? 'Средний ~'
+    : 'Высокий !';
+
+if (param === 'water_hard')
+  return v <= 7
+    ? 'Норма ✓'
+    : v <= 14
+    ? 'Средний ~'
+    : 'Высокий !';
 
   // Универсально для солености
   if (param === 'salt') return v <= 70 ? 'Норма ✓' : 'Повышено';
 
   // Растения
-  if (param === 'plant') return v >= 70 ? 'Хорошее ✓' : v >= 40 ? 'Среднее ~' : 'Ослаблено'; return 'Норма ✓';
+  if (param === 'plant')
+  return v >= 70
+    ? 'Норма ✓'
+    : v >= 40
+    ? 'Средний ~'
+    : 'Дефицит !';
 }
 
   function metricCard(label, value, unit, param) {
@@ -1097,20 +1119,20 @@
 
   if (selectedTypes.includes("water")) {
   document.getElementById('waterMetrics').innerHTML =
-    metricCard('pH воды', rec.water_ph || '-', '', 'water_ph') +
-    metricCard('Минерализация', rec.water_mineralization || '-', '', 'water_min') +
-    metricCard('Жесткость', rec.water_hardness || '-', '', 'water_hard') +
-    metricCard('Солёность', rec.water_salinity || '-', '', 'salt');
+    metricCard('pH воды', rec.water_ph || '-', 'pH', 'water_ph') +
+    metricCard('Минерализация', rec.water_mineralization || '-', 'ppm', 'water_min') +
+    metricCard('Жесткость', rec.water_hardness || '-', 'мг-экв/л', 'water_hard') +
+    metricCard('Солёность', rec.water_salinity || '-', 'ppm', 'salt');
   }
   document.getElementById('plantSection').style.display =
   selectedTypes.includes("plant") ? "block" : "none";
 
   if (selectedTypes.includes("plant")) {
   document.getElementById('plantMetrics').innerHTML =
-    metricCard('Азот в листьях', rec.plant_nitrogen || '-', '', 'plant') +
-    metricCard('Хлорофилл', rec.plant_chlorophyll || '-', '', 'plant') +
-    metricCard('Влажность', rec.plant_moisture || '-', '', 'plant') +
-    metricCard('Состояние', rec.plant_condition || '-', '', 'plant');
+    metricCard('Азот в листьях', rec.plant_nitrogen || '-', 'мг/кг', 'plant') +
+    metricCard('Хлорофилл', rec.plant_chlorophyll || '-', 'мг/л', 'plant') +
+    metricCard('Влажность', rec.plant_moisture || '-', '%', 'plant') +
+    metricCard('Состояние', rec.plant_condition || '-', 'балл', 'plant');
   }
     
   document.getElementById('recsBlock').innerHTML =
