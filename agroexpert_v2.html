@@ -61,6 +61,42 @@
   }
   .nav-links a:hover { color: var(--green-pale); }
 
+  .menu-toggle{
+  display:none;
+  background:none;
+  border:none;
+  color:white;
+  font-size:1.8rem;
+  cursor:pointer;
+  }
+
+  @media (max-width: 768px){
+
+   .menu-toggle{
+     display:block;
+    }
+
+   .nav-links{
+    display:none;
+    flex-direction:column;
+    position:absolute;
+    top:80px;
+    left:0;
+    width:100%;
+    background:var(--green-dark);
+    padding:1rem;
+    z-index:999;
+    }
+
+   .nav-links.active{
+    display:flex;
+   }
+
+   .nav-cta{
+    display:none;
+   }
+  }
+
   .soil-grid {
    display: grid;
    grid-template-columns: repeat(2, 1fr);
@@ -388,6 +424,7 @@
 <!-- NAV -->
 <nav>
   <div class="logo">Agro<span>Expert</span></div>
+  <button class="menu-toggle" onclick="toggleMenu()"> ☰ </button>
   <ul class="nav-links">
     <li><a href="#how">Как работаем</a></li>
     <li><a href="#services">Услуги</a></li>
@@ -605,7 +642,7 @@
         </div>
         <div class="contact-detail">
           <div class="contact-detail-icon">⏱️</div>
-          <div><strong>Сроки</strong>Выезд в течение 1–3 рабочих дней. Результаты в течение 24 часов после забора проб.</div>
+          <div><strong>Сроки</strong>Выезд в течение 1–3 рабочих дней. Результаты в течение 3-4 часов после забора проб.</div>
         </div>
         <div class="contact-detail">
           <div class="contact-detail-icon">💬</div>
@@ -1165,6 +1202,11 @@ if (param === 'water_hard')
     document.getElementById('lookupBox').style.display = 'block';
     document.getElementById('codeInput').value = '';
     document.getElementById('codeError').style.display = 'none';
+  }
+
+  function toggleMenu() {
+  document.querySelector('.nav-links')
+    .classList.toggle('active');
   }
 
   // ── ADMIN PANEL ──

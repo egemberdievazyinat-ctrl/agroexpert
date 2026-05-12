@@ -222,41 +222,67 @@
     </div>
 
     <div class="svg-wrap">
-      <svg id="map-svg" viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+      <svg id="map-svg" viewBox="0 0 580 290" xmlns="http://www.w3.org/2000/svg">
+        <!-- Регионы Кыргызстана — упрощённые контуры по реальной географии -->
 
-  <!-- Талас -->
-  <path id="r-TAL" class="region"
-  d="M80,190 L130,150 L200,165 L220,220 L180,255 L115,245 L80,220 Z"/>
+        <!-- Таласская — запад -->
+        <path id="r-TAL" class="region" d="
+          M 62 90 L 82 72 L 108 65 L 135 70 L 152 85 L 148 105 L 130 118
+          L 105 120 L 78 112 L 62 100 Z"/>
 
-  <!-- Чуй -->
-  <path id="r-CHU" class="region"
-  d="M200,165 L300,130 L390,135 L430,180 L405,235 L320,255 L240,235 L220,220 Z"/>
+        <!-- Чуйская — север-центр (включая Бишкек) -->
+        <path id="r-CHU" class="region" d="
+          M 135 70 L 175 58 L 215 54 L 240 62 L 248 80 L 235 100 L 210 108
+          L 185 108 L 165 100 L 152 85 Z"/>
 
-  <!-- Иссык-Куль -->
-  <path id="r-ISS" class="region"
-  d="M390,135 L520,120 L650,145 L700,195 L660,245 L540,255 L445,235 L430,180 Z"/>
+        <!-- Иссык-Кульская — восток (котловина вокруг озера) -->
+        <path id="r-ISS" class="region" d="
+          M 240 62 L 285 52 L 330 55 L 365 68 L 375 88 L 360 108 L 330 118
+          L 295 118 L 265 110 L 248 95 L 248 80 Z"/>
 
-  <!-- Нарын -->
-  <path id="r-NAR" class="region"
-  d="M320,255 L445,235 L540,255 L550,340 L470,385 L370,375 L300,320 Z"/>
+        <!-- Нарынская — центр -->
+        <path id="r-NAR" class="region" d="
+          M 210 108 L 248 95 L 265 110 L 295 118 L 330 118 L 330 148
+          L 300 165 L 268 168 L 240 155 L 218 138 L 208 120 Z"/>
 
-  <!-- Джалал-Абад -->
-  <path id="r-JAL" class="region"
-  d="M180,255 L240,235 L320,255 L300,320 L235,365 L165,345 L145,285 Z"/>
+        <!-- Джалал-Абадская — запад-юг -->
+        <path id="r-JAL" class="region" d="
+          M 148 105 L 165 100 L 185 108 L 210 108 L 208 120 L 218 138
+          L 210 160 L 192 175 L 168 182 L 148 170 L 132 152 L 128 128
+          L 138 112 Z"/>
 
-  <!-- Ош -->
-  <path id="r-OSH" class="region"
-  d="M235,365 L300,320 L370,375 L390,445 L320,490 L240,470 L205,420 Z"/>
+        <!-- Ошская — юг-центр -->
+        <path id="r-OSH" class="region" d="
+          M 192 175 L 210 160 L 218 138 L 240 155 L 268 168 L 278 192
+          L 260 212 L 232 220 L 205 215 L 182 200 Z"/>
 
-  <!-- Баткен -->
-  <path id="r-BAT" class="region"
-  d="M145,285 L165,345 L205,420 L165,485 L95,500 L50,435 L55,350 Z"/>
+        <!-- Баткенская — юго-запад -->
+        <path id="r-BAT" class="region" d="
+          M 105 148 L 132 152 L 148 170 L 168 182 L 182 200 L 165 218
+          L 138 225 L 110 215 L 88 195 L 82 172 L 90 152 Z"/>
 
-  <!-- Иссык-Куль -->
-  <ellipse cx="570" cy="185" rx="70" ry="22"
-  fill="#85B7EB" opacity=".65"/>
+        <!-- Озеро Иссык-Куль -->
+        <ellipse cx="308" cy="84" rx="40" ry="16" fill="#85B7EB" opacity=".7"/>
+        <text x="308" y="88" text-anchor="middle" font-size="7" fill="#0C447C" font-family="sans-serif" pointer-events="none">Иссык-Куль</text>
 
-</svg>
+        <!-- Метки областей -->
+        <text class="region-label" id="lbl-TAL"  x="97"  y="95">Таласская</text>
+        <text class="region-label" id="lbl-CHU"  x="193" y="83">Чуйская</text>
+        <text class="region-label" id="lbl-ISS"  x="310" y="96">Иссык-Кульская</text>
+        <text class="region-label" id="lbl-NAR"  x="272" y="142">Нарынская</text>
+        <text class="region-label" id="lbl-JAL"  x="172" y="142">Джалал-Абадская</text>
+        <text class="region-label" id="lbl-OSH"  x="232" y="193">Ошская</text>
+        <text class="region-label" id="lbl-BAT"  x="130" y="188">Баткенская</text>
+
+        <!-- Бишкек -->
+        <circle cx="198" cy="72" r="4" fill="#E8A020"/>
+        <text x="205" y="70" font-size="8" fill="#1C3D2A" font-family="sans-serif" font-weight="600" pointer-events="none">Бишкек</text>
+
+        <!-- Компас -->
+        <text x="540" y="30" font-size="16" fill="#2D6A40" font-family="sans-serif" text-anchor="middle">N</text>
+        <line x1="540" y1="35" x2="540" y2="48" stroke="#2D6A40" stroke-width="1.5"/>
+        <polygon points="540,35 536,48 540,45 544,48" fill="#2D6A40"/>
+      </svg>
     </div>
 
     <div class="statusbar">
