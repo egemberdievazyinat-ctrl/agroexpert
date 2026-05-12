@@ -822,8 +822,20 @@
             <input id="a-date" type="date" style="width:100%;padding:0.7rem 0.9rem;border:1px solid var(--cream-dark);border-radius:8px;font-size:0.9rem;font-family:'Geologica',sans-serif;">
           </div>
           <div>
-            <label style="font-size:0.8rem;color:var(--text-mid);display:block;margin-bottom:0.3rem;">Район / участок</label>
-            <input id="a-loc" type="text" placeholder="Чуйская обл., с. Кант" style="width:100%;padding:0.7rem 0.9rem;border:1px solid var(--cream-dark);border-radius:8px;font-size:0.9rem;font-family:'Geologica',sans-serif;">
+            <label style="font-size:0.8rem;color:var(--text-mid);display:block;margin-bottom:0.3rem;">Район / область</label>
+             <select id="a-loc" style="width:100%;padding:0.7rem 0.9rem;border:1px solid var(--cream-dark);border-radius:8px;font-size:0.9rem;font-family:'Geologica',sans-serif;background:white;">
+               <option value="">Выберите район</option>
+               <option value="Бишкек">Бишкек</option>
+               <option value="Чуйская область">Чуйская область</option>
+               <option value="Иссык-Кульская область">Иссык-Кульская область</option>
+               <option value="Ошская область">Ошская область</option>
+               <option value="Нарынская область">Нарынская область</option>
+               <option value="Таласская область">Таласская область</option>
+               <option value="Жалал-Абадская область">Жалал-Абадская область</option>
+               <option value="Баткенская область">Баткенская область</option>
+             </select>
+             <label style="font-size:0.8rem;color:var(--text-mid);display:block;margin-top:0.8rem;margin-bottom:0.3rem;">Полный адрес / ориентир</label>
+               <input id="a-address" type="text" placeholder="Например: с. Кант, ул. Ленина 24" style="width:100%;padding:0.7rem 0.9rem;border:1px solid var(--cream-dark);border-radius:8px;font-size:0.9rem;font-family:'Geologica',sans-serif;">
           </div>
           <div>
             <label style="font-size:0.8rem;color:var(--text-mid);display:block;margin-bottom:0.3rem;">Культура</label>
@@ -1237,6 +1249,7 @@ if (param === 'water_hard')
       visitDate: document.getElementById('a-date').value,
       
       location: document.getElementById('a-loc').value,
+      address: document.getElementById('a-address').value,
       culture: document.getElementById('a-crop').value,
 
       ph: document.getElementById('a-ph').value?.replace(",", ".") || null,

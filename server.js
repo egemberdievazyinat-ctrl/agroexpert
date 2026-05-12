@@ -59,6 +59,7 @@ app.post("/add-research", async (req, res) => {
     visit_date: req.body.visitDate,
 
     location: req.body.location,
+    address: req.body.address,
     culture: req.body.culture,
     analysis_types: req.body.analysis_types,
 
