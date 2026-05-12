@@ -647,6 +647,8 @@
               <option>Жалал-Абадская область</option>
               <option>Баткенская область</option>
             </select>
+            <label style="display:block;margin-top:1rem;">Полный адрес / ориентир</label>
+            <input id="address" type="text" placeholder="Например: с. Кант, ул. Ленина 24, рядом со школой" style="width:100%;">
           </div>
           <div class="form-group">
             <label>Тип участка и культуры</label>
@@ -942,6 +944,7 @@
     name: document.getElementById("reqName").value,
     phone: document.getElementById("reqPhone").value,
     region: document.getElementById("reqRegion").value,
+    address: document.getElementById('address').value,
     field_info: document.getElementById("reqField").value,
     comment: document.getElementById("reqComment").value,
     analyses: Array.from(

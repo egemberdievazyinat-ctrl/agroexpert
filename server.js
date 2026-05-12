@@ -162,6 +162,7 @@ app.post("/add-request", async (req, res) => {
       name,
       phone,
       region,
+      address,
       field_info,
       analyses,
       comment
@@ -173,6 +174,7 @@ app.post("/add-request", async (req, res) => {
         name,
         phone,
         region,
+        address,
         field_info,
         analyses,
         comment
