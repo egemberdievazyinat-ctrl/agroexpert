@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgroExpert — Карты почв Кыргызстана</title>
+<style>
+  :root {
+    --g-dark:  #1C3D2A;
+    --g-mid:   #2D6A40;
+    --g-light: #4A9A56;
+    --g-pale:  #C8E6CC;
+    --amber:   #E8A020;
+    --cream:   #F5F0E8;
+    --white:   #FFFFFF;
+    --text:    #1A1A18;
+    --muted:   #6B6B65;
+    --border:  #E0DDD5;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--g-dark);
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: -.02em; }
+  .logo span { color: var(--g-pale); }
+  .header-sub { font-size: 13px; color: rgba(255,255,255,.55); }
+
+  /* ── LAYOUT ── */
+  .app { display: flex; height: calc(100vh - 60px); }
+
+  /* ── SIDEBAR ── */
+  .side {
+    width: 280px;
+    flex-shrink: 0;
+    background: var(--white);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .side-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--g-dark);
+  }
+  .side-title { font-size: 11px; font-weight: 600; color: var(--g-pale); letter-spacing: .07em; text-transform: uppercase; margin-bottom: 10px; }
+  .map-btn {
+    width: 100%; text-align: left; padding: 10px 12px; border-radius: 8px;
+    border: 1px solid transparent; background: transparent;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    color: rgba(255,255,255,.75); margin-bottom: 4px;
+    transition: all .15s; display: flex; align-items: center; gap: 10px;
+  }
+  .map-btn .num {
+    width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
+  }
+  .map-btn:hover { background: rgba(255,255,255,.1); }
+  .map-btn.active { background: var(--g-mid); color: #fff; border-color: var(--g-light); }
+  .map-btn.active .num { background: rgba(255,255,255,.25); }
+
+  .side-body { flex: 1; overflow-y: auto; padding: 16px; }
+
+  /* Legend */
+  .legend-title { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 10px; }
+  .leg-item { display: flex; align-items: center; gap: 9px; margin-bottom: 7px; font-size: 12.5px; color: var(--text); }
+  .swatch { width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0; border: 1px solid rgba(0,0,0,.08); }
+
+  /* Info panel */
+  .info-panel {
+    margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px;
+  }
+  .info-region {
+    font-size: 15px; font-weight: 600; color: var(--g-dark); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .info-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .info-row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 6px 0; border-bottom: 1px solid var(--border); gap: 8px;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-key { font-size: 12px; color: var(--muted); }
+  .info-val { font-size: 12px; font-weight: 500; color: var(--text); text-align: right; max-width: 60%; }
+  .info-val.warn { color: #C0392B; }
+
+  .hint-box {
+    background: var(--g-pale); border-radius: 8px; padding: 12px;
+    font-size: 12px; color: var(--g-dark); line-height: 1.6; margin-top: 14px;
+  }
+
+  /* Data source */
+  .data-src {
+    margin-top: 16px; padding: 10px 12px; border-radius: 8px;
+    background: #F0F4F8; font-size: 11px; color: var(--muted); line-height: 1.6;
+    border-left: 3px solid var(--g-light);
+  }
+  .data-src strong { display: block; margin-bottom: 3px; color: var(--g-dark); font-size: 11px; }
+
+  /* ── MAP AREA ── */
+  .map-area {
+    flex: 1; position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .map-topbar {
+    background: var(--white); border-bottom: 1px solid var(--border);
+    padding: 12px 20px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .map-topbar h2 { font-size: 15px; font-weight: 600; color: var(--g-dark); }
+  .map-topbar p  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .badge {
+    background: var(--g-pale); color: var(--g-dark); padding: 4px 10px;
+    border-radius: 20px; font-size: 11px; font-weight: 600;
+  }
+
+  .svg-wrap {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  #map-svg { width: 100%; max-width: 680px; height: auto; }
+
+  path.region {
+    stroke: #fff; stroke-width: 1.5; cursor: pointer;
+    transition: opacity .15s, stroke-width .1s;
+    filter: none;
+  }
+  path.region:hover { opacity: .8; stroke-width: 2.5; }
+  path.region.selected { stroke: #1C3D2A; stroke-width: 3; opacity: 1 !important; }
+
+  text.region-label {
+    font-size: 9px; font-family: sans-serif; font-weight: 600;
+    fill: rgba(255,255,255,.9); pointer-events: none;
+    text-anchor: middle; dominant-baseline: central;
+  }
+  text.region-label.dark { fill: rgba(0,0,0,.6); }
+
+  /* ── BOTTOM STATUS BAR ── */
+  .statusbar {
+    background: var(--g-dark); padding: 8px 20px;
+    display: flex; align-items: center; gap: 20px;
+  }
+  .stat-item { font-size: 11px; color: rgba(255,255,255,.6); }
+  .stat-item strong { color: var(--g-pale); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 700px) {
+    .app { flex-direction: column; height: auto; }
+    .side { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+    .svg-wrap { padding: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Agro<span>Expert</span></div>
+  <div class="header-sub">Карты почв Кыргызстана · Интерактивный атлас</div>
+</header>
+
+<div class="app">
+
+  <!-- ── SIDEBAR ── -->
+  <div class="side">
+    <div class="side-header">
+      <div class="side-title">Выберите карту</div>
+      <button class="map-btn active" id="btn0" onclick="setMap(0)">
+        <span class="num">1</span>Качество почв
+      </button>
+      <button class="map-btn" id="btn1" onclick="setMap(1)">
+        <span class="num">2</span>Культуры по регионам
+      </button>
+      <button class="map-btn" id="btn2" onclick="setMap(2)">
+        <span class="num">3</span>Засолённость почв
+      </button>
+    </div>
+
+    <div class="side-body">
+      <div class="legend-title">Легенда</div>
+      <div id="legend"></div>
+
+      <div class="info-panel" id="info-panel">
+        <div class="hint-box" id="hint-box">
+          Нажмите на любую область на карте, чтобы увидеть подробные данные.
+        </div>
+        <div id="info-content" style="display:none;">
+          <div class="info-region">
+            <div class="info-dot" id="info-dot"></div>
+            <span id="info-name"></span>
+          </div>
+          <div id="info-rows"></div>
+        </div>
+      </div>
+
+      <div class="data-src" id="data-src"></div>
+    </div>
+  </div>
+
+  <!-- ── MAP AREA ── -->
+  <div class="map-area">
+    <div class="map-topbar">
+      <div>
+        <h2 id="map-title">Карта оценки качества почв</h2>
+        <p id="map-sub">Орошаемые и неорошаемые земли Кыргызстана по областям</p>
+      </div>
+      <span class="badge" id="map-badge">Орошение</span>
+    </div>
+
+    <div class="svg-wrap">
+      <svg id="map-svg" viewBox="0 0 580 290" xmlns="http://www.w3.org/2000/svg">
+        <!-- Регионы Кыргызстана — упрощённые контуры по реальной географии -->
+
+        <!-- Таласская — запад -->
+        <path id="r-TAL" class="region" d="
+          M 62 90 L 82 72 L 108 65 L 135 70 L 152 85 L 148 105 L 130 118
+          L 105 120 L 78 112 L 62 100 Z"/>
+
+        <!-- Чуйская — север-центр (включая Бишкек) -->
+        <path id="r-CHU" class="region" d="
+          M 135 70 L 175 58 L 215 54 L 240 62 L 248 80 L 235 100 L 210 108
+          L 185 108 L 165 100 L 152 85 Z"/>
+
+        <!-- Иссык-Кульская — восток (котловина вокруг озера) -->
+        <path id="r-ISS" class="region" d="
+          M 240 62 L 285 52 L 330 55 L 365 68 L 375 88 L 360 108 L 330 118
+          L 295 118 L 265 110 L 248 95 L 248 80 Z"/>
+
+        <!-- Нарынская — центр -->
+        <path id="r-NAR" class="region" d="
+          M 210 108 L 248 95 L 265 110 L 295 118 L 330 118 L 330 148
+          L 300 165 L 268 168 L 240 155 L 218 138 L 208 120 Z"/>
+
+        <!-- Джалал-Абадская — запад-юг -->
+        <path id="r-JAL" class="region" d="
+          M 148 105 L 165 100 L 185 108 L 210 108 L 208 120 L 218 138
+          L 210 160 L 192 175 L 168 182 L 148 170 L 132 152 L 128 128
+          L 138 112 Z"/>
+
+        <!-- Ошская — юг-центр -->
+        <path id="r-OSH" class="region" d="
+          M 192 175 L 210 160 L 218 138 L 240 155 L 268 168 L 278 192
+          L 260 212 L 232 220 L 205 215 L 182 200 Z"/>
+
+        <!-- Баткенская — юго-запад -->
+        <path id="r-BAT" class="region" d="
+          M 105 148 L 132 152 L 148 170 L 168 182 L 182 200 L 165 218
+          L 138 225 L 110 215 L 88 195 L 82 172 L 90 152 Z"/>
+
+        <!-- Озеро Иссык-Куль -->
+        <ellipse cx="308" cy="84" rx="40" ry="16" fill="#85B7EB" opacity=".7"/>
+        <text x="308" y="88" text-anchor="middle" font-size="7" fill="#0C447C" font-family="sans-serif" pointer-events="none">Иссык-Куль</text>
+
+        <!-- Метки областей -->
+        <text class="region-label" id="lbl-TAL"  x="97"  y="95">Таласская</text>
+        <text class="region-label" id="lbl-CHU"  x="193" y="83">Чуйская</text>
+        <text class="region-label" id="lbl-ISS"  x="310" y="96">Иссык-Кульская</text>
+        <text class="region-label" id="lbl-NAR"  x="272" y="142">Нарынская</text>
+        <text class="region-label" id="lbl-JAL"  x="172" y="142">Джалал-Абадская</text>
+        <text class="region-label" id="lbl-OSH"  x="232" y="193">Ошская</text>
+        <text class="region-label" id="lbl-BAT"  x="130" y="188">Баткенская</text>
+
+        <!-- Бишкек -->
+        <circle cx="198" cy="72" r="4" fill="#E8A020"/>
+        <text x="205" y="70" font-size="8" fill="#1C3D2A" font-family="sans-serif" font-weight="600" pointer-events="none">Бишкек</text>
+
+        <!-- Компас -->
+        <text x="540" y="30" font-size="16" fill="#2D6A40" font-family="sans-serif" text-anchor="middle">N</text>
+        <line x1="540" y1="35" x2="540" y2="48" stroke="#2D6A40" stroke-width="1.5"/>
+        <polygon points="540,35 536,48 540,45 544,48" fill="#2D6A40"/>
+      </svg>
+    </div>
+
+    <div class="statusbar">
+      <div class="stat-item">Областей: <strong>7</strong></div>
+      <div class="stat-item">Площадь КР: <strong>199 951 км²</strong></div>
+      <div class="stat-item">Пашня: <strong>~1.3 млн га</strong></div>
+      <div class="stat-item" id="stat-sel">Выбрано: <strong>—</strong></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const REGIONS = [
+  { id:"CHU", name:"Чуйская область" },
+  { id:"TAL", name:"Таласская область" },
+  { id:"ISS", name:"Иссык-Кульская область" },
+  { id:"NAR", name:"Нарынская область" },
+  { id:"JAL", name:"Джалал-Абадская область" },
+  { id:"OSH", name:"Ошская область" },
+  { id:"BAT", name:"Баткенская область" },
+];
+
+const MAPS = [
+  {
+    title:  "Карта оценки качества почв",
+    sub:    "Орошаемые и неорошаемые земли Кыргызстана по областям",
+    badge:  "Плодородие",
+    src:    "Источники: советский агроклиматический справочник КирССР; данные ГОЗР КР; FAO Harmonized World Soil Database v2 (2023). После накопления данных AgroExpert — собственные лабораторные измерения по каждому участку.",
+    legend: [
+      { color:"#2D6A40", label:"Высокое плодородие" },
+      { color:"#7BB661", label:"Среднее плодородие" },
+      { color:"#C4D87A", label:"Низкое плодородие" },
+      { color:"#E8C87A", label:"Деградированные почвы" },
+      { color:"#A07850", label:"Горные / малопригодные" },
+    ],
+    data: {
+      CHU: { color:"#2D6A40", rows:[
+        ["Качество почв","Высокое"],["Тип почвы","Серозём, чернозём"],
+        ["Гумус","2.8–3.5%"],["pH","6.5–7.2"],
+        ["Орошение","70% орошается"],["Лучшие культуры","Пшеница, кукуруза, сахарная свёкла"],
+      ]},
+      TAL: { color:"#7BB661", rows:[
+        ["Качество почв","Среднее"],["Тип почвы","Серозём"],
+        ["Гумус","1.8–2.5%"],["pH","6.8–7.5"],
+        ["Орошение","45% орошается"],["Лучшие культуры","Зерновые, табак, бобовые"],
+      ]},
+      ISS: { color:"#7BB661", rows:[
+        ["Качество почв","Среднее"],["Тип почвы","Горно-луговые, серозём"],
+        ["Гумус","1.5–2.2%"],["pH","7.0–7.8"],
+        ["Орошение","30% орошается"],["Лучшие культуры","Зерновые, картофель, сады"],
+      ]},
+      NAR: { color:"#A07850", rows:[
+        ["Качество почв","Горные"],["Тип почвы","Горно-луговые"],
+        ["Гумус","1.2–2.0%"],["pH","6.2–7.0"],
+        ["Орошение","15% орошается"],["Лучшие культуры","Картофель, ячмень, пастбища"],
+      ]},
+      JAL: { color:"#7BB661", rows:[
+        ["Качество почв","Среднее"],["Тип почвы","Серозём, аллювий"],
+        ["Гумус","1.9–2.8%"],["pH","7.0–7.8"],
+        ["Орошение","55% орошается"],["Лучшие культуры","Хлопок, фрукты, зерновые"],
+      ]},
+      OSH: { color:"#C4D87A", rows:[
+        ["Качество почв","Ниже среднего"],["Тип почвы","Серозём (светлый)"],
+        ["Гумус","1.2–1.9%"],["pH","7.2–8.0"],
+        ["Орошение","40% орошается"],["Лучшие культуры","Хлопок, бобовые, овощи"],
+      ]},
+      BAT: { color:"#E8C87A", rows:[
+        ["Качество почв","⚠ Деградированные"],["Тип почвы","Серозём засолённый"],
+        ["Гумус","0.8–1.5%"],["pH","7.5–8.5"],
+        ["Орошение","35% орошается"],["Лучшие культуры","Абрикосы, овощи (ограниченно)"],
+      ], warn:["Качество почв"]},
+    }
+  },
+  {
+    title:  "Карта сельскохозяйственных культур",
+    sub:    "Основные культуры по областям согласно агроклиматическим условиям",
+    badge:  "Культуры",
+    src:    "Источники: Нацстатком КР 2023; агроклиматический справочник КирССР; FAOSTAT; ESA WorldCover 2021. После запуска AgroExpert — накопленные данные из выездов лаборатории с GPS-привязкой.",
+    legend: [
+      { color:"#D4A820", label:"Зерновые (пшеница, ячмень)" },
+      { color:"#5A9E3C", label:"Картофель и овощи" },
+      { color:"#C86A3A", label:"Хлопок и бобовые" },
+      { color:"#4A88C8", label:"Сады и виноградники" },
+      { color:"#8C9870", label:"Пастбища, горные угодья" },
+    ],
+    data: {
+      CHU: { color:"#D4A820", rows:[
+        ["Главная культура","Пшеница, кукуруза"],
+        ["Дополнительно","Сахарная свёкла, подсолнечник"],
+        ["С/х площадь","~580 000 га"],["Доля пашни","68%"],
+        ["Водоснабжение","Каналы реки Чу"],
+        ["Примечание","Главный зерновой регион КР"],
+      ]},
+      TAL: { color:"#D4A820", rows:[
+        ["Главная культура","Пшеница, ячмень"],
+        ["Дополнительно","Табак, бобовые"],
+        ["С/х площадь","~200 000 га"],["Доля пашни","38%"],
+        ["Водоснабжение","Река Талас"],
+        ["Примечание","Исторически табачный регион"],
+      ]},
+      ISS: { color:"#4A88C8", rows:[
+        ["Главная культура","Зерновые, сады"],
+        ["Дополнительно","Картофель, ягоды"],
+        ["С/х площадь","~430 000 га"],["Доля пашни","22%"],
+        ["Водоснабжение","Горные реки"],
+        ["Примечание","Уникальный микроклимат озера"],
+      ]},
+      NAR: { color:"#8C9870", rows:[
+        ["Главная культура","Картофель, ячмень"],
+        ["Дополнительно","Пастбищное животноводство"],
+        ["С/х площадь","~500 000 га"],["Доля пашни","12%"],
+        ["Водоснабжение","Минимальное орошение"],
+        ["Примечание","Высокогорье 1500–3000 м над уровнем моря"],
+      ]},
+      JAL: { color:"#C86A3A", rows:[
+        ["Главная культура","Хлопок, фрукты"],
+        ["Дополнительно","Зерновые, овощи"],
+        ["С/х площадь","~330 000 га"],["Доля пашни","40%"],
+        ["Водоснабжение","Кара-Дарья, Нарын"],
+        ["Примечание","Часть Ферганской долины"],
+      ]},
+      OSH: { color:"#C86A3A", rows:[
+        ["Главная культура","Хлопок, бобовые"],
+        ["Дополнительно","Овощи, зерновые"],
+        ["С/х площадь","~290 000 га"],["Доля пашни","35%"],
+        ["Водоснабжение","Реки Ак-Буура, Кара-Дарья"],
+        ["Примечание","Засушливый юг, нужен учёт воды"],
+      ]},
+      BAT: { color:"#5A9E3C", rows:[
+        ["Главная культура","Абрикосы, овощи"],
+        ["Дополнительно","Виноград, гранат"],
+        ["С/х площадь","~170 000 га"],["Доля пашни","28%"],
+        ["Водоснабжение","Река Исфара"],
+        ["Примечание","⚠ Рис здесь — недопустимо! Засушливо"],
+      ], warn:["Примечание"]},
+    }
+  },
+  {
+    title:  "Карта засолённости почв",
+    sub:    "Уровень засоления и рекомендации по мелиорации по областям КР",
+    badge:  "Засоление",
+    src:    "Источники: ГУП «Кыргызгипрозем»; советские почвенные карты КирССР; FAO Global Soil Salinity Assessment; GLASOD (Global Assessment of Soil Degradation). В будущем — EC-данные из лабораторных анализов AgroExpert с каждого выезда.",
+    legend: [
+      { color:"#C8E6CC", label:"Незасолённые (EC < 1)" },
+      { color:"#F5D080", label:"Слабозасолённые (1–2 мСм/см)" },
+      { color:"#EF9F27", label:"Среднезасолённые (2–6 мСм/см)" },
+      { color:"#E24B4A", label:"Сильнозасолённые (6–12 мСм/см)" },
+      { color:"#791F1F", label:"Очень сильное (> 12 мСм/см)" },
+    ],
+    data: {
+      CHU: { color:"#F5D080", rows:[
+        ["Засолённость","Слабая"],["EC (мСм/см)","0.8–2.0"],
+        ["Доля засолённых","~12% пашни"],["Риск","Низкий"],
+        ["Тип солей","Хлоридно-сульфатный"],
+        ["Рекомендация","Промывные поливы раз в 3 года"],
+      ]},
+      TAL: { color:"#C8E6CC", rows:[
+        ["Засолённость","Незасолённые"],["EC (мСм/см)","< 0.8"],
+        ["Доля засолённых","< 5% пашни"],["Риск","Очень низкий"],
+        ["Тип солей","Отсутствует"],
+        ["Рекомендация","Мониторинг раз в 5 лет"],
+      ]},
+      ISS: { color:"#C8E6CC", rows:[
+        ["Засолённость","Незасолённые"],["EC (мСм/см)","< 1.0"],
+        ["Доля засолённых","< 5% пашни"],["Риск","Низкий"],
+        ["Тип солей","Отсутствует"],
+        ["Рекомендация","Профилактический мониторинг"],
+      ]},
+      NAR: { color:"#C8E6CC", rows:[
+        ["Засолённость","Незасолённые"],["EC (мСм/см)","< 0.6"],
+        ["Доля засолённых","~3% пашни"],["Риск","Минимальный"],
+        ["Тип солей","Следы"],
+        ["Рекомендация","Промывка не нужна"],
+      ]},
+      JAL: { color:"#EF9F27", rows:[
+        ["Засолённость","Среднее"],["EC (мСм/см)","2.5–6.0"],
+        ["Доля засолённых","~28% пашни"],["Риск","Высокий"],
+        ["Тип солей","Хлоридный, сульфатный"],
+        ["Рекомендация","Дренаж + ежегодная промывка 3000 м³/га"],
+      ]},
+      OSH: { color:"#E24B4A", rows:[
+        ["Засолённость","⚠ Сильное"],["EC (мСм/см)","6.0–12.0"],
+        ["Доля засолённых","~40% пашни"],["Риск","Очень высокий"],
+        ["Тип солей","Хлоридно-натриевый"],
+        ["Рекомендация","Гипсование 8–12 т/га + коренная мелиорация"],
+      ], warn:["Засолённость","Риск"]},
+      BAT: { color:"#E24B4A", rows:[
+        ["Засолённость","⚠ Сильное"],["EC (мСм/см)","5.0–10.0"],
+        ["Доля засолённых","~35% пашни"],["Риск","Очень высокий"],
+        ["Тип солей","Хлоридно-сульфатный"],
+        ["Рекомендация","⚠ Критично! Выращивание риса недопустимо"],
+      ], warn:["Засолённость","Риск","Рекомендация"]},
+    }
+  }
+];
+
+let curMap = 0, curRegion = null;
+
+function setMap(i) {
+  curMap = i;
+  curRegion = null;
+  [0,1,2].forEach(j => document.getElementById("btn"+j).classList.toggle("active", j===i));
+  const m = MAPS[i];
+  document.getElementById("map-title").textContent  = m.title;
+  document.getElementById("map-sub").textContent    = m.sub;
+  document.getElementById("map-badge").textContent  = m.badge;
+  document.getElementById("data-src").textContent   = m.src;
+
+  // Legend
+  document.getElementById("legend").innerHTML = m.legend.map(l =>
+    `<div class="leg-item">
+      <div class="swatch" style="background:${l.color}"></div>
+      <span>${l.label}</span>
+    </div>`
+  ).join("");
+
+  // Paint regions
+  REGIONS.forEach(r => {
+    const el = document.getElementById("r-"+r.id);
+    el.style.fill = m.data[r.id].color;
+    el.classList.remove("selected");
+  });
+
+  // Reset info
+  document.getElementById("hint-box").style.display   = "block";
+  document.getElementById("info-content").style.display = "none";
+  document.getElementById("stat-sel").innerHTML = 'Выбрано: <strong>—</strong>';
+}
+
+function selectRegion(id) {
+  curRegion = id;
+  const m = MAPS[curMap];
+  const d = m.data[id];
+  const r = REGIONS.find(x => x.id === id);
+
+  REGIONS.forEach(x => document.getElementById("r-"+x.id).classList.remove("selected"));
+  document.getElementById("r-"+id).classList.add("selected");
+
+  document.getElementById("info-dot").style.background = d.color;
+  document.getElementById("info-name").textContent = r.name;
+  document.getElementById("info-rows").innerHTML = d.rows.map(([k,v]) => {
+    const isWarn = d.warn && d.warn.includes(k);
+    return `<div class="info-row">
+      <span class="info-key">${k}</span>
+      <span class="info-val${isWarn?" warn":""}">${v}</span>
+    </div>`;
+  }).join("");
+
+  document.getElementById("hint-box").style.display    = "none";
+  document.getElementById("info-content").style.display = "block";
+  document.getElementById("stat-sel").innerHTML = `Выбрано: <strong>${r.name}</strong>`;
+}
+
+// Attach click listeners
+REGIONS.forEach(r => {
+  const el = document.getElementById("r-"+r.id);
+  if (el) el.addEventListener("click", () => selectRegion(r.id));
+});
+
+setMap(0);
+</script>
+</body>
+</html>
