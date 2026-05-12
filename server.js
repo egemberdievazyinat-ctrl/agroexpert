@@ -16,6 +16,7 @@ const supabase = createClient(
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
 
 // временная база
 let researchDB = {};
