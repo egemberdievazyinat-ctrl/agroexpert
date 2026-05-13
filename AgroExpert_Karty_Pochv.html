@@ -47,6 +47,29 @@
   .logo span { color: var(--g-pale); }
   .header-sub { font-size: 13px; color: rgba(255,255,255,.55); }
 
+  .back-home-btn{
+    position:fixed;
+    top:20px;
+    left:20px;
+    z-index:1000;
+ 
+    background:#0f3d23;
+    color:white;
+    text-decoration:none;
+
+    padding:10px 16px;
+    border-radius:12px;
+
+    font-size:14px;
+    font-weight:600;
+
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .back-home-btn:hover{
+   opacity:0.9;
+  }
+
   /* ── LAYOUT ── */
   .app { display: flex; height: calc(100vh - 60px); }
 
@@ -179,6 +202,8 @@
   <div class="logo">Agro<span>Expert</span></div>
   <div class="header-sub">Карты почв Кыргызстана · Интерактивный атлас</div>
 </header>
+
+<a href="/" class="back-home-btn">☰ Меню</a>
 
 <div class="app">
 
