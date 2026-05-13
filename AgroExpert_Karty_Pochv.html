@@ -47,28 +47,33 @@
   .logo span { color: var(--g-pale); }
   .header-sub { font-size: 13px; color: rgba(255,255,255,.55); }
 
-  .back-home-btn{
-    position:fixed;
-    top:20px;
-    left:20px;
-    z-index:1000;
- 
-    background:#0f3d23;
-    color:white;
-    text-decoration:none;
+  .mobile-menu-btn{
+  font-size:2rem;
+  color:white;
+  cursor:pointer;
+}
 
-    padding:10px 16px;
-    border-radius:12px;
+@media(max-width:768px){
 
-    font-size:14px;
-    font-weight:600;
+  .nav-links{
+    display:none;
+    position:absolute;
+    top:70px;
+    left:0;
+    width:100%;
+    background:var(--green-dark);
 
-    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    flex-direction:column;
+    gap:1.2rem;
+
+    padding:2rem 1.5rem;
+    z-index:999;
   }
 
-  .back-home-btn:hover{
-   opacity:0.9;
+  .nav-links.active{
+    display:flex;
   }
+}
 
   /* ── LAYOUT ── */
   .app { display: flex; height: calc(100vh - 60px); }
@@ -203,7 +208,23 @@
   <div class="header-sub">Карты почв Кыргызстана · Интерактивный атлас</div>
 </header>
 
-<a href="/" class="back-home-btn">☰ Меню</a>
+<nav>
+  <div class="logo">Agro<span>Expert</span></div>
+
+  <div class="mobile-menu-btn" onclick="toggleMenu()">
+    ☰
+  </div>
+
+  <ul class="nav-links" id="mobileNav">
+    <li><a href="/#how">Как работаем</a></li>
+    <li><a href="/#services">Услуги</a></li>
+    <li><a href="/AgroExpert_Karty_Pochv.html">Карты почв</a></li>
+    <li><a href="/#recs">Что делать с результатами</a></li>
+    <li><a href="/#clients">Для кого мы</a></li>
+    <li><a href="/#contact">Контакты</a></li>
+    <li><a href="/#results">🔍 Мои результаты</a></li>
+  </ul>
+</nav>
 
 <div class="app">
 
@@ -1863,5 +1884,19 @@ REGIONS.forEach(r => {
 
 setMap(0);
 </script>
+
+<script>
+function toggleMenu(){
+  document.getElementById("mobileNav").classList.toggle("active");
+}
+
+// закрываем после выбора
+document.querySelectorAll("#mobileNav a").forEach(link=>{
+  link.addEventListener("click", ()=>{
+    document.getElementById("mobileNav").classList.remove("active");
+  });
+});
+</script>
+
 </body>
 </html>
