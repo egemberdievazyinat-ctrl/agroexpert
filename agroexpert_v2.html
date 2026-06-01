@@ -274,6 +274,69 @@
     font-size: 0.85rem; color: var(--text-light);
   }
   .service-price strong { color: var(--green-mid); font-size: 1rem; }
+  .price-panel{
+  margin-top: 2rem;
+  background: var(--white);
+  border: 1px solid var(--cream-dark);
+  border-radius: 20px;
+  padding: 1.5rem;
+}
+
+.price-panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:1rem;
+  flex-wrap:wrap;
+  margin-bottom:1rem;
+}
+
+.price-panel h3{
+  font-family:'Playfair Display', serif;
+  font-size:1.4rem;
+  color:var(--green-dark);
+  margin-top:0.35rem;
+}
+
+.price-select{
+  min-width: 240px;
+  padding:0.8rem 1rem;
+  border:1px solid var(--cream-dark);
+  border-radius:12px;
+  background:white;
+  font-family:'Geologica',sans-serif;
+}
+
+.price-items{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1rem;
+}
+
+.price-item{
+  padding:1rem;
+  border-radius:16px;
+  background:#faf7f1;
+  border:1px solid #eadfce;
+}
+
+.price-name{
+  font-weight:600;
+  color:var(--green-dark);
+}
+
+.price-value{
+  font-family:'Playfair Display', serif;
+  font-size:1.4rem;
+  color:var(--green-mid);
+  margin-top:0.35rem;
+}
+
+  .price-note{
+  font-size:0.82rem;
+  color:var(--text-light);
+  margin-top:0.25rem;
+}
 
   /* ── RECOMMENDATIONS ── */
   .recs { background: var(--green-dark); color: var(--white); }
@@ -472,6 +535,12 @@
     font-size:0.8rem;
     line-height:1.25;
   }
+
+  .price-select{
+    width:100%;
+    min-width:0;
+  }
+
 }
 </style>
 </head>
@@ -614,6 +683,22 @@
         <div class="service-price">от <strong>700 сом</strong> за культуру</div>
       </div>
     </div>
+    <div class="price-panel">
+  <div class="price-panel-head">
+    <div>
+      <span class="section-tag">Прайс-лист</span>
+      <h3>Выберите анализ</h3>
+    </div>
+
+    <select id="priceCategory" class="price-select">
+      <option value="soil">Анализ почвы</option>
+      <option value="water">Анализ воды</option>
+      <option value="plant">Анализ растений</option>
+    </select>
+  </div>
+
+  <div id="priceItems" class="price-items"></div>
+</div>
   </div>
 </section>
 
@@ -1041,6 +1126,46 @@
     this.style.display = 'none';
     document.getElementById('successMsg').style.display = 'block';
   });
+
+  const PRICE_LIST = {
+    soil: [
+      { name: 'pH', price: '350 сом', note: 'Кислотность почвы' },
+      { name: 'Гумус', price: '750 сом', note: 'Органическое вещество' },
+      { name: 'Азот (N)', price: '950 сом', note: 'Подвижный азот' },
+      { name: 'Фосфор (P)', price: '850 сом', note: 'Подвижный фосфор' },
+      { name: 'Калий (K)', price: '1000 сом', note: 'Обменный калий' }
+    ],
+    water: [
+      { name: 'pH воды', price: '300 сом', note: 'Кислотность воды' },
+      { name: 'Минерализация / TDS', price: '350 сом', note: 'Солесодержание' },
+      { name: 'Жесткость', price: '600 сом', note: 'Общая жесткость' },
+      { name: 'Нитраты', price: '850 сом', note: 'NO₃' },
+      { name: 'Колиформы', price: '2000 сом', note: 'Бактериология' }
+    ],
+    plant: [
+      { name: 'Азот в листьях', price: '700 сом', note: 'Листовая диагностика' },
+      { name: 'Хлорофилл', price: '700 сом', note: 'Состояние растения' },
+      { name: 'Влажность', price: '500 сом', note: 'Стресс / водный режим' },
+      { name: 'Фитосанитарная оценка', price: '1000 сом', note: 'Общий осмотр' }
+    ]
+  };
+
+  function renderPriceList(key){
+    const wrap = document.getElementById('priceItems');
+    wrap.innerHTML = PRICE_LIST[key].map(item => `
+      <div class="price-item">
+        <div class="price-name">${item.name}</div>
+        <div class="price-value">${item.price}</div>
+        <div class="price-note">${item.note}</div>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('priceCategory').addEventListener('change', function(){
+    renderPriceList(this.value);
+  });
+
+  renderPriceList('soil');
 
   async function submitRequest() {
   console.log("submit работает");
