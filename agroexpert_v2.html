@@ -70,89 +70,6 @@
   cursor:pointer;
   }
 
-  @media (max-width: 768px){
-
-   .menu-toggle{
-     display:block;
-    }
-
-   .nav-links{
-    display:none;
-    flex-direction:column;
-    position:absolute;
-    top:80px;
-    left:0;
-    width:100%;
-    background:var(--green-dark);
-    padding:1rem;
-    z-index:999;
-    }
-
-   .nav-links.active{
-    display:flex;
-   }
-
-   .nav-cta{
-    display:none;
-   }
-
-   .hero-title{
-    font-size:3rem;
-    line-height:1.1;
-   }
-
-   .hero-actions{
-    flex-direction:column;
-    gap:12px;
-   }
-
-   .hero-actions .btn{
-    width:100%;
-   }
-
-   .hero-stats{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-   }
-
-   .hero-content{
-    padding-left: 20px;
-    padding-right: 20px;
-    box-sizing: border-box;
-    grid-template-columns:1fr;
-    gap:2rem;
-   }
-
-   .hero-stats{
-    width: 100%;
-   }
-
-     /* Карточки статистики */
-   .stat-card{
-    min-height: 180px;
-    padding: 1rem;
-   }
-
-   .stat-num{
-    font-size: 1rem;
-    line-height: 1.1;
-
-    word-break: normal;
-    overflow-wrap: normal;
-    hyphens: none;
-   }
-
-   .stat-title{
-    font-size: clamp(0.95rem, 4vw, 1.2rem);
-   }
-
-   .stat-label{
-    font-size: 0.9rem;
-    line-height: 1.35;
-   }
-  }
-
   .soil-grid {
    display: grid;
    grid-template-columns: repeat(2, 1fr);
@@ -481,6 +398,138 @@
     .form-row { grid-template-columns: 1fr; }
     .clients-grid { grid-template-columns: 1fr 1fr; }
   }
+  @media (max-width: 768px){
+    .hero-content{
+     grid-template-columns: 1fr;
+     gap: 2rem;
+     padding-left: 20px;
+     padding-right: 20px;
+     box-sizing: border-box;
+    }
+
+    .hero h1{
+     font-size: clamp(2rem, 8vw, 3rem);
+     line-height: 1.05;
+    }
+
+    .hero-btns{
+     flex-direction: column;
+     gap: 12px;
+    }
+
+    .hero-btns a{
+     width: 100%;
+    }
+
+    .hero-stats{
+     grid-template-columns: 1fr 1fr;
+     gap: 12px;
+     width: 100%;
+    }
+
+    .stat-card{
+     min-height: 180px;
+     padding: 1rem;
+    }
+
+    .stat-title{
+     font-size: 1rem;
+     line-height: 1.1;
+    }
+
+    .stat-num{
+     font-size: 1rem;
+     line-height: 1.1;
+    }
+
+    .stat-label{
+     font-size: 0.9rem;
+     line-height: 1.35;
+   }
+  }
+
+  @media (max-width: 768px){
+
+   .menu-toggle{
+     display:block;
+    }
+
+   .nav-links{
+    display:none;
+    flex-direction:column;
+    position:absolute;
+    top:80px;
+    left:0;
+    width:100%;
+    background:var(--green-dark);
+    padding:1rem;
+    z-index:999;
+    }
+
+   .nav-links.active{
+    display:flex;
+   }
+
+   .nav-cta{
+    display:none;
+   }
+
+   .h1{
+    font-size:3rem;
+    line-height:1.1;
+   }
+
+   .hero-btns{
+    flex-direction:column;
+    gap:12px;
+   }
+
+   .btn-primary{
+    width:100%;
+   }
+
+   .hero-stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+   }
+
+   .hero-content{
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+    grid-template-columns:1fr;
+    gap:2rem;
+   }
+
+   .hero-stats{
+    width: 100%;
+   }
+
+     /* Карточки статистики */
+   .stat-card{
+    min-height: 180px;
+    padding: 1rem;
+   }
+
+   .stat-num{
+    font-size: 1rem;
+    line-height: 1.1;
+
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: none;
+   }
+
+   .stat-title{
+    font-size: clamp(0.95rem, 4vw, 1.2rem);
+    word-break: break-word;
+   }
+   .stat-label{
+    font-size: 0.9rem;
+    line-height: 1.35;
+   }
+  }  
 </style>
 </head>
 <body>
