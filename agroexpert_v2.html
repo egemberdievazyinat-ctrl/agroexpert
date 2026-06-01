@@ -398,56 +398,7 @@
     .form-row { grid-template-columns: 1fr; }
     .clients-grid { grid-template-columns: 1fr 1fr; }
   }
-  @media (max-width: 768px){
-    .hero-content{
-     grid-template-columns: 1fr;
-     gap: 2rem;
-     padding-left: 20px;
-     padding-right: 20px;
-     box-sizing: border-box;
-    }
-
-    .hero h1{
-     font-size: clamp(2rem, 8vw, 3rem);
-     line-height: 1.05;
-    }
-
-    .hero-btns{
-     flex-direction: column;
-     gap: 12px;
-    }
-
-    .hero-btns a{
-     width: 100%;
-    }
-
-    .hero-stats{
-     grid-template-columns: 1fr 1fr;
-     gap: 12px;
-     width: 100%;
-    }
-
-    .stat-card{
-     min-height: 180px;
-     padding: 1rem;
-    }
-
-    .stat-title{
-     font-size: 1rem;
-     line-height: 1.1;
-    }
-
-    .stat-num{
-     font-size: 1rem;
-     line-height: 1.1;
-    }
-
-    .stat-label{
-     font-size: 0.9rem;
-     line-height: 1.35;
-   }
-  }
-
+  
   @media (max-width: 768px){
 
    .menu-toggle{
@@ -490,8 +441,8 @@
 
    .hero-stats{
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
    }
 
    .hero-content{
@@ -502,25 +453,17 @@
     gap:2rem;
    }
 
-   .hero-stats{
-    width: 100%;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-   }
-
      /* Карточки статистики */
    .stat-card{
-    min-height: 160px;
-    padding: 0.9rem 1rem 1rem;
+    min-height: 150px;
+    padding: 0.9rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border-radius: 18px;
-    background: rgba(255,255,255,0.05);
    }
 
    .stat-num{
-    font-size: 1.65rem;
+    font-size: 1.55rem;
     line-height: 1;
     margin-top: -2px;
     word-break: normal;
@@ -529,13 +472,13 @@
    }
 
    .stat-title{
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     line-height: 1.05;
     word-break: normal;
     margin-top: -2px;
    }
    .stat-label{
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     line-height: 1.25;
    }
   }  
@@ -590,8 +533,8 @@
         <div class="stat-label">срок получения результатов</div>
       </div>
       <div class="stat-card">
-        <div class="stat-title">Индивидуальный план</div>
-        <div class="stat-label">рекомендации от агронома</div>
+        <div class="stat-title">План от агронома</div>
+        <div class="stat-label">индивидуальные рекомендации</div>
       </div>
     </div>
   </div>
