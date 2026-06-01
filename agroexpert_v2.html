@@ -436,6 +436,38 @@
     background: var(--green-pale); border-radius: 12px;
     color: var(--green-dark); font-weight: 500; font-size: 0.95rem;
   }
+  .analysis-select{
+  margin-top: 0.8rem;
+  border: 1px solid var(--cream-dark);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+ }
+
+ .analysis-select summary{
+  cursor: pointer;
+  padding: 0.9rem 1rem;
+  font-weight: 600;
+  list-style: none;
+  background: #faf7f1;
+ }
+
+ .analysis-select summary::-webkit-details-marker{
+  display: none;
+ }
+
+ .analysis-options{
+  padding: 0.75rem 1rem 1rem;
+  display: grid;
+  gap: 0.55rem;
+ }
+
+ .analysis-options label{
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.92rem;
+ }
 
   /* ── FOOTER ── */
   footer {
@@ -858,12 +890,45 @@
           </div>
           <div class="form-group">
             <label>Нужные анализы</label>
-            <div class="checkbox-group">
-              <label class="checkbox-item"><input type="checkbox" name="analysis" value="soil"> Анализ почвы</label>
-              <label class="checkbox-item"><input type="checkbox" name="analysis" value="water"> Анализ воды</label>
-              <label class="checkbox-item"><input type="checkbox" name="analysis" value="plant"> Анализ растений</label>
+            <details class="analysis-select">
+            <summary>Анализ почвы</summary>
+           <div class="analysis-options">
+            <label><input type="checkbox" name="analysis_detail" value="soil_ph"> pH (кислотность)</label>
+            <label><input type="checkbox" name="analysis_detail" value="soil_humus"> Гумус</label>
+            <label><input type="checkbox" name="analysis_detail" value="soil_n"> Азот (N)</label>
+            <label><input type="checkbox" name="analysis_detail" value="soil_p"> Фосфор (P)</label>
+            <label><input type="checkbox" name="analysis_detail" value="soil_k"> Калий (K)</label>
+            <label><input type="checkbox" name="analysis_detail" value="soil_ca"> Кальций (Ca)</label>
+            <label><input type="checkbox" name="analysis_detail" value="soil_mg"> Магний (Mg)</label>
+            <label><input type="checkbox" name="analysis_detail" value="soil_ec"> Электропроводность / засолённость</label>
+            <label><input type="checkbox" name="analysis_detail" value="soil_texture"> Механический состав</label>
+           </div>
+           </details>
+
+          <details class="analysis-select">
+            <summary>Анализ воды</summary>
+           <div class="analysis-options">
+             <label><input type="checkbox" name="analysis_detail" value="water_ph"> pH воды</label>
+             <label><input type="checkbox" name="analysis_detail" value="water_ec"> Электропроводность (EC)</label>
+             <label><input type="checkbox" name="analysis_detail" value="water_tds"> Общая минерализация (TDS)</label>
+             <label><input type="checkbox" name="analysis_detail" value="water_hardness"> Жёсткость</label>
+             <label><input type="checkbox" name="analysis_detail" value="water_nitrate"> Нитраты</label>
+             <label><input type="checkbox" name="analysis_detail" value="water_chloride"> Хлориды</label>
+             <label><input type="checkbox" name="analysis_detail" value="water_bacteria"> Общие колиформы</label>
             </div>
-          </div>
+          </details>
+
+          <details class="analysis-select">
+            <summary>Анализ растений</summary>
+           <div class="analysis-options">
+              <label><input type="checkbox" name="analysis_detail" value="plant_n"> Азот в листьях</label>
+              <label><input type="checkbox" name="analysis_detail" value="plant_chl"> Хлорофилл</label>
+              <label><input type="checkbox" name="analysis_detail" value="plant_moisture"> Влажность</label>
+              <label><input type="checkbox" name="analysis_detail" value="plant_state"> Состояние растения</label>
+              <label><input type="checkbox" name="analysis_detail" value="plant_disease"> Диагностика болезней</label>
+           </div>
+          </details>
+        </div>
           <div class="form-group">
             <label>Комментарий (проблемы, вопросы)</label>
             <textarea 
