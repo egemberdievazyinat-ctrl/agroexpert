@@ -442,45 +442,46 @@
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
- }
+}
 
- .analysis-select summary{
+.analysis-select summary{
   cursor: pointer;
   padding: 0.9rem 1rem;
   font-weight: 600;
   list-style: none;
   background: #faf7f1;
- }
+}
 
- .analysis-select summary::-webkit-details-marker{
+.analysis-select summary::-webkit-details-marker{
   display: none;
- }
+}
 
- .analysis-options{
+.analysis-options{
   padding: 0.75rem 1rem 1rem;
   display: grid;
   gap: 0.55rem;
- }
-
- .analysis-options label{
-  display:flex !important;
-  align-items:flex-start !important;
-  gap: 1px !important;
-
-  color:#000 !important;
-  font-size:16px !important;
-  font-weight:400 !important;
-  line-height:1.4 !important;
-
-  visibility:visible !important;
-  opacity:1 !important;
 }
 
- .analysis-options input[type="checkbox"] {
-  margin: 0;
-  margin-top: 3px;
-  flex-shrink: 0;
- }
+.analysis-options label{
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+  color: #222 !important;
+  font-size: 16px !important;
+  line-height: 1.4 !important;
+}
+
+.analysis-options input[type="checkbox"]{
+  width: auto !important;
+  padding: 0 !important;
+  margin: 3px 0 0 !important;
+  border: none !important;
+  background: transparent !important;
+  flex: 0 0 auto;
+  accent-color: var(--green-mid);
+}
 
   /* ── FOOTER ── */
   footer {
